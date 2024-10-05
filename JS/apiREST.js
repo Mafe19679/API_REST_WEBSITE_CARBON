@@ -83,10 +83,10 @@ function viewError(error) {
 // Gráfico que muestra el rating
 function createChart(data) {
     // Constante ratingValues con los gramos por categoria/rating
-    const categoryValues = { 'A+': 0.095, 'A': 0.186, 'B': 0.341, 'C': 0.493, 'D': 0.656, 'E': 0.846, 'F': 0.847 };
+    const ratingValues = { 'A+': 0.095, 'A': 0.186, 'B': 0.341, 'C': 0.493, 'D': 0.656, 'E': 0.846, 'F': 0.847 };
     // Obtenemos del rating del sitio web
     let websiteRating = data.rating;
-    let websiteValue = categoryValues[websiteRating];
+    let websiteValue = ratingValues[websiteRating];
 
     // Creamos y personalizamos el grafico
     const options = {
@@ -114,7 +114,7 @@ function createChart(data) {
         },
         // Configuracion eje x
         xaxis: {
-            categories: Object.keys(categoryValues),
+            categories: Object.keys(ratingValues),
             labels: {
                 show: true,
             },
@@ -123,13 +123,13 @@ function createChart(data) {
         series: [{
             name: 'Gramos',
             data: [
-                { x: 'A+', y: categoryValues['A+'], fillColor: 'rgba(0, 255, 188, 0.6)' },
-                { x: 'A', y: categoryValues['A'], fillColor: 'rgba(25, 255, 148, 0.6)' },
-                { x: 'B', y: categoryValues['B'], fillColor: 'rgba(72, 255, 66, 0.6)' },
-                { x: 'C', y: categoryValues['C'], fillColor: 'rgba(111, 255, 6, 0.6)' },
-                { x: 'D', y: categoryValues['D'], fillColor: 'rgba(249, 255, 0, 0.6)' },
-                { x: 'E', y: categoryValues['E'], fillColor: 'rgba(255, 168, 0, 0.6)' },
-                { x: 'F', y: categoryValues['F'], fillColor: 'rgba(255, 0, 0, 0.6)' }
+                { x: 'A+', y: ratingValues['A+'], fillColor: 'rgba(0, 255, 188, 0.6)' },
+                { x: 'A', y: ratingValues['A'], fillColor: 'rgba(25, 255, 148, 0.6)' },
+                { x: 'B', y: ratingValues['B'], fillColor: 'rgba(72, 255, 66, 0.6)' },
+                { x: 'C', y: ratingValues['C'], fillColor: 'rgba(111, 255, 6, 0.6)' },
+                { x: 'D', y: ratingValues['D'], fillColor: 'rgba(249, 255, 0, 0.6)' },
+                { x: 'E', y: ratingValues['E'], fillColor: 'rgba(255, 168, 0, 0.6)' },
+                { x: 'F', y: ratingValues['F'], fillColor: 'rgba(255, 0, 0, 0.6)' }
             ]
         }],
         // Linea e info rating sitio web
