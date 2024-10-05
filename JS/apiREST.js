@@ -2,7 +2,7 @@ document.getElementById('searchBtn').addEventListener('click', getURL);
 
 // Obtenemos url ingresada por el usuario
 function getURL(event) {
-    event.preventDefault(); 
+    event.preventDefault();
     // Definimos variable ingresada en el input con id "urlInput"
     let url = document.getElementById('urlInput').value;
     // Validamos que traiga una url
@@ -38,6 +38,8 @@ function getData(url) {
             console.log('Api Data:', apiData);
             // Llamamos la función viewResult
             viewResult(apiData);
+            // Llamamos la funcion donde creamos el grafico
+            createChart(apiData);
         })
         // Manejamos el error
         .catch(error => {
@@ -57,10 +59,11 @@ function viewResult(data) {
     }
     // Generamos htmll con los datos de la api
     let resultHtml = `
-                <h4>Emisiones de carbono de: ${data.url}</h4>
+                <h4>Emisiones de carbono producidas por: ${data.url}</h4>
+                <h6>La información a continuación es por 1 carga en el sitio web.</h6>
                 <p><strong>Calificación:</strong> ${data.rating}</p>
-                <p><strong>Tamaño de la página:</strong> ${data.bytes} bytes</p>
-                <p><strong>Más limpio que: </strong> El ${Math.round(data.cleanerThan * 100)}% de los sitios web</p>
+                <div id="chart"></div>
+                <p><strong>Este sitio web es más limpio que el </strong> ${Math.round(data.cleanerThan * 100)}% de los sitios web</p>
                 <p><strong>Emisiones de CO2 (energía convencional):</strong> ${data.statistics.co2.grid.grams} gramos = ${data.statistics.co2.grid.litres} litros </p>
                 <p><strong>Emisiones de CO2 (energía renovable):</strong> ${data.statistics.co2.renewable.grams} gramos = ${data.statistics.co2.renewable.litres} litros</p>
             `;
@@ -73,4 +76,96 @@ function viewResult(data) {
 function viewError(error) {
     document.getElementById('result').innerHTML = `<p class="text-danger">Error: ${error.message}</p>`;
     document.getElementById('result').style.display = 'block';
+}
+
+//-------------------------------------------------------------------------------------------------------------------
+
+// Gráfico que muestra el rating
+function createChart(data) {
+    // Constante ratingValues con los gramos por categoria/rating
+    const categoryValues = { 'A+': 0.095, 'A': 0.186, 'B': 0.341, 'C': 0.493, 'D': 0.656, 'E': 0.846, 'F': 0.847 };
+    // Obtenemos del rating del sitio web
+    let websiteRating = data.rating;
+    let websiteValue = categoryValues[websiteRating];
+
+    // Creamos y personalizamos el grafico
+    const options = {
+        // Detalles del grafico (tipo, tamaño, barra de herramientas)
+        chart: {
+            type: 'bar',
+            height: 350,
+            toolbar: { show: true }
+        },
+        // Detalle de barras (orientacion, estilo, ancho)
+        plotOptions: {
+            bar: { 
+                horizontal: false,
+                endingShape: 'rounded',
+                columnWidth: '40%',
+            }
+        },
+        // Muestra valores de cada barra
+        dataLabels: {
+            enabled: true,
+            style: {
+                colors: ['#000'],  
+                fontWeight: 'bold' 
+            }
+        },
+        // Configuracion eje x
+        xaxis: {
+            categories: Object.keys(categoryValues),
+            labels: {
+                show: true,
+            },
+            max: 1
+        },
+        series: [{
+            name: 'Gramos',
+            data: [
+                { x: 'A+', y: categoryValues['A+'], fillColor: 'rgba(0, 255, 188, 0.6)' },
+                { x: 'A', y: categoryValues['A'], fillColor: 'rgba(25, 255, 148, 0.6)' },
+                { x: 'B', y: categoryValues['B'], fillColor: 'rgba(72, 255, 66, 0.6)' },
+                { x: 'C', y: categoryValues['C'], fillColor: 'rgba(111, 255, 6, 0.6)' },
+                { x: 'D', y: categoryValues['D'], fillColor: 'rgba(249, 255, 0, 0.6)' },
+                { x: 'E', y: categoryValues['E'], fillColor: 'rgba(255, 168, 0, 0.6)' },
+                { x: 'F', y: categoryValues['F'], fillColor: 'rgba(255, 0, 0, 0.6)' }
+            ]
+        }],
+        // Linea e info rating sitio web
+        annotations: {
+            yaxis: [{
+                y: websiteValue,
+                borderColor: '#000000', 
+            }],
+            xaxis: [{
+                x: websiteRating, 
+                label: {
+                    text: `Calificación: ${websiteRating} (${websiteValue} gr)`,
+                    style: {
+                        color: '#fff',
+                        background: '#000',
+
+                    },
+                    offsetX: 8
+                }
+            }]
+        },
+        // Tooltip
+        tooltip: {
+            shared: true,
+            intersect: false,
+            y: {
+                formatter: (val) => {
+                    return `${val} gr`;
+                }
+            }
+        }
+    };
+
+    // Genera el grafico y lo renderiza 
+    const chart = new ApexCharts(document.querySelector("#chart"), options);
+    chart.render();
+
+    
 }
