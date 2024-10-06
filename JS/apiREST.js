@@ -28,6 +28,7 @@ function getData(url) {
                 throw new Error('No se encontraron datos en la API, para el sitio web consultado.');
             }
             // Si hay una respuesta, la obtiene con formato json
+			
             return response.json();
         })
         // Mostramos los datos que trae la api
