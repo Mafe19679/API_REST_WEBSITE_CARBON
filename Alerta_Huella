@@ -1,0 +1,38 @@
+</html>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Notificaciones de Huella de Carbono</title>
+</head>
+<body>
+    <h1>Medición de Huella de Carbono</h1>
+    <button id="checkCarbonFootprint">Verificar Huella de Carbono</button>
+
+    <script>
+        document.getElementById('checkCarbonFootprint').addEventListener('click', () => {
+            // Simulación de datos de huella de carbono
+            const carbonFootprint = Math.random() * 100; // Valor aleatorio entre 0 y 100
+            const threshold = 50; // Umbral de alerta
+
+            if (carbonFootprint > threshold) {
+                showNotification(`Alerta: Huella de Carbono Alta - ${carbonFootprint.toFixed(2)} kg CO2`);
+            } else {
+                alert(`Huella de Carbono: ${carbonFootprint.toFixed(2)} kg CO2`);
+            }
+        });
+
+        function showNotification(message) {
+            if (Notification.permission === 'granted') {
+                new Notification(message);
+            } else if (Notification.permission !== 'denied') {
+                Notification.requestPermission().then(permission => {
+                    if (permission === 'granted') {
+                        new Notification(message);
+                    }
+                });
+            }
+        }
+    </script>
+</body>
+</html>
