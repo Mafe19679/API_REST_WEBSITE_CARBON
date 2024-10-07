@@ -1,6 +1,6 @@
 const axios = require('axios');
 const apiKey = 'KEY'; //
-const apiUrl = 'https://www.websitecarbon.com/api/
+const apiUrl = 'https://www.websitecarbon.com/api/'
 
 axios.get(apiUrl, {
     headers: {

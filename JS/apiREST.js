@@ -192,8 +192,8 @@ function createChart(data) {
         },
         // Valores del grafico
         labels: [
-            `Energia Convencional (gr): ${websiteCO2GridGram.toFixed(4)}`,
-            `Energia Renovable (gr): ${websiteCO2RenewableGram.toFixed(4)}`
+            `Energia Convencional (gramos): ${websiteCO2GridGram.toFixed(4)}`,
+            `Energia Renovable (gramos): ${websiteCO2RenewableGram.toFixed(4)}`
         ],
         // Titulo
         title: {
@@ -203,8 +203,9 @@ function createChart(data) {
         // Detalle de grafico
         tooltip: {
             y: {
-                formatter: function (val) {
-                    return `${val.toFixed(4)} gramos`;
+                text:'',
+                formatter: function () {
+                    return '';
                 }
             }
         },
@@ -245,8 +246,8 @@ function createChart(data) {
         },
         // Valores del grafico
         labels: [
-            `Energia Convencional (l): ${websiteCO2GridLitres.toFixed(4)}`,
-            `Energia Renovable (l): ${websiteCO2RenewableLitres.toFixed(4)}`
+            `Energia Convencional (litros): ${websiteCO2GridLitres.toFixed(4)}`,
+            `Energia Renovable (litros): ${websiteCO2RenewableLitres.toFixed(4)}`
         ],
         // Titulo
         title: {
@@ -256,8 +257,9 @@ function createChart(data) {
         // Detalle de grafico
         tooltip: {
             y: {
-                formatter: function (val) {
-                    return `${val.toFixed(4)} litros`;
+                text:'',
+                formatter: function () {
+                    return '';
                 }
             }
         },
